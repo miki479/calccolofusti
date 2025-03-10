@@ -2,56 +2,116 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calcolo Fine Produzione</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Calcolo Produzione Fusti</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="/manifest.json">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <header>
+        <h1>Calcolatore Produzione Fusti</h1>
+    </header>
 
-    <div class="container">
-        <h2>Calcolo Fine Produzione</h2>
+    <div id="turnoStatus" class="turno-status"></div>
 
-        <label for="turno">Seleziona il turno:</label>
-        <select id="turno">
-            <option value="6:00">Mattina (6:00 - 14:00)</option>
-            <option value="14:00">Pomeriggio (14:00 - 22:00)</option>
-            <option value="8:00">Spezzato (8:00 - 17:00)</option>
-        </select>
-
-        <label for="fusti">Numero di fusti da 25 litri:</label>
-        <input type="number" id="fusti" placeholder="Inserisci il numero di fusti">
-
-        <label for="pausa">Durata pausa:</label>
-        <select id="pausa">
-            <option value="0">Nessuna</option>
-            <option value="0.5">30 minuti</option>
-            <option value="1">1 ora</option>
-        </select>
-
-        <label for="cambio">Tempo per i cambi (minuti):</label>
-        <input type="number" id="cambio" placeholder="Es. 15, 30..." value="0">
-
-        <button onclick="calcolaOrari()">Calcola Orario di Fine</button>
-
-        <h3 class="result" id="orario-fisso">Orario Fisso: --:--</h3>
-        <h3 class="result" id="orario-dinamico">Orario Dinamico: --:--</h3>
-
-        <canvas id="grafico-produzione" width="400" height="200"></canvas>
-
-        <div class="cronologia-lista" id="cronologia-lista"></div>
+    <div class="tab-container">
+        <button class="tab-button active" onclick="openTab(event, 'fustiTab')">Fusti</button>
+        <button class="tab-button" onclick="openTab(event, 'quintaliTab')">Quintali</button>
     </div>
 
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3 id="modal-titolo">Dettagli Cronologia</h3>
-            <div id="modal-contenuto"></div>
+    <section id="fustiTab" class="tab-content active">
+        <label for="fustoTipo">Tipo di Fusto</label>
+        <select id="fustoTipo" onchange="aggiornaVelocita()">
+            <option value="25">25L - 120 fusti/h</option>
+            <option value="20">20L - 33 fusti/h</option>
+            <option value="20sacca">20L Sacca - 22 fusti/h</option>
+            <option value="10">10L - 260 fusti/h</option>
+            <option value="3bag">3L Bag - 9 q/h</option>
+        </select>
+
+        <div id="macchineInputs" class="hidden">
+            <label for="macchina1">Macchina 1 (fusti/h)</label>
+            <input type="number" id="macchina1" placeholder="Inserisci fusti/h">
+
+            <label for="macchina2">Macchina 2 (fusti/h)</label>
+            <input type="number" id="macchina2" placeholder="Inserisci fusti/h">
         </div>
-    </div>
+
+        <label for="fustiTotali">Fusti da Produrre</label>
+        <input type="number" id="fustiTotali" placeholder="Inserisci quantità">
+
+        <label for="pausa">Pausa</label>
+        <select id="pausa">
+            <option value="0">Nessuna Pausa</option>
+            <option value="30">Pausa di 30 minuti</option>
+            <option value="60">Pausa di 1 ora</option>
+        </select>
+
+        <label for="cambioMacchina">Tempo di Cambio Macchina</label>
+        <select id="cambioMacchina">
+            <option value="0">Nessun cambio</option>
+            <option value="15">15 minuti</option>
+            <option value="30">30 minuti</option>
+        </select>
+
+        <button onclick="calcolaFusti()">Calcola</button>
+
+        <div id="risultatoFusti" class="result"></div>
+        <div id="cronologiaFusti" class="cronologia"></div>
+    </section>
+
+    <section id="quintaliTab" class="tab-content">
+        <label for="fustoTipoQ">Tipo di Fusto</label>
+        <select id="fustoTipoQ" onchange="aggiornaVelocitaQuintali()">
+            <option value="25">25L - 30 q/h</option>
+            <option value="20">20L - 9.9 q/h</option>
+            <option value="20sacca">20L Sacca - 6.6 q/h</option>
+            <option value="10">10L - 26 q/h</option>
+            <option value="3bag">3L Bag - 9 q/h</option>
+        </select>
+
+        <label for="quintaliTotali">Quintali da Produrre</label>
+        <input type="number" id="quintaliTotali" placeholder="Inserisci quintali">
+
+        <label for="pausaQ">Pausa</label>
+        <select id="pausaQ">
+            <option value="0">Nessuna Pausa</option>
+            <option value="30">Pausa di 30 minuti</option>
+            <option value="60">Pausa di 1 ora</option>
+        </select>
+
+        <label for="cambioMacchinaQ">Tempo di Cambio Macchina</label>
+        <select id="cambioMacchinaQ">
+            <option value="0">Nessun cambio</option>
+            <option value="15">15 minuti</option>
+            <option value="30">30 minuti</option>
+        </select>
+
+        <button onclick="calcolaQuintali()">Calcola</button>
+
+        <div id="risultatoQuintali" class="result"></div>
+        <div id="cronologiaQuintali" class="cronologia"></div>
+    </section>
+
+    <button onclick="esportaCSV()">Esporta in CSV</button>
+
+    <canvas id="grafico-produzione" width="400" height="200"></canvas>
+
+    <button id="resetCronologia" onclick="resettaCronologia()">Reset Cronologia</button>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(function(registration) {
+                    console.log('Service Worker registrato con successo:', registration);
+                })
+                .catch(function(error) {
+                    console.log('Errore durante la registrazione del Service Worker:', error);
+                });
+        }
+    </script>
 
     <script src="script.js"></script>
-
 </body>
 </html>
