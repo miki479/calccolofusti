@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calcolo Fine Produzione</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Calcolo Fine Produzione</h2>
+
+        <label for="turno">Seleziona il turno:</label>
+        <select id="turno">
+            <option value="6:00">Mattina (6:00 - 14:00)</option>
+            <option value="14:00">Pomeriggio (14:00 - 22:00)</option>
+            <option value="8:00">Spezzato (8:00 - 17:00)</option>
+        </select>
+
+        <label for="fusti">Numero di fusti da 25 litri:</label>
+        <input type="number" id="fusti" placeholder="Inserisci il numero di fusti">
+
+        <label for="pausa">Durata pausa:</label>
+        <select id="pausa">
+            <option value="0">Nessuna</option>
+            <option value="0.5">30 minuti</option>
+            <option value="1">1 ora</option>
+        </select>
+
+        <label for="cambio">Tempo per i cambi (minuti):</label>
+        <input type="number" id="cambio" placeholder="Es. 15, 30..." value="0">
+
+        <button id="calcolaBtn">Calcola Orario di Fine</button>
+
+        <h3 class="result" id="orario-fisso">Orario Fisso: --:--</h3>
+        <h3 class="result" id="orario-dinamico">Orario Dinamico: --:--</h3>
+
+        <div id="cronologia-container">
+            <h3>Storico Calcoli</h3>
+            <div id="cronologia-lista"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
