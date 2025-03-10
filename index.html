@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calcolo Fine Produzione</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -31,14 +32,22 @@
         <label for="cambio">Tempo per i cambi (minuti):</label>
         <input type="number" id="cambio" placeholder="Es. 15, 30..." value="0">
 
-        <button id="calcolaBtn">Calcola Orario di Fine</button>
+        <button onclick="calcolaOrari()">Calcola Orario di Fine</button>
 
         <h3 class="result" id="orario-fisso">Orario Fisso: --:--</h3>
         <h3 class="result" id="orario-dinamico">Orario Dinamico: --:--</h3>
 
-        <div id="cronologia-container">
-            <h3>Storico Calcoli</h3>
-            <div id="cronologia-lista"></div>
+        <canvas id="grafico-produzione" width="400" height="200"></canvas>
+
+        <div class="cronologia-lista" id="cronologia-lista"></div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modal-titolo">Dettagli Cronologia</h3>
+            <div id="modal-contenuto"></div>
         </div>
     </div>
 

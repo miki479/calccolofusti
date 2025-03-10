@@ -163,3 +163,18 @@ button:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
+/* Pulsante Elimina */
+.cronologia-item button:nth-child(2) {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.cronologia-item button:nth-child(2):hover {
+    background-color: #ff1a1a;
+}
