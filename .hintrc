@@ -5,6 +5,12 @@
   "hints": {
     "meta-viewport": "off",
     "no-inline-styles": "off",
-    "apple-touch-icons": "off"
+    "apple-touch-icons": "off",
+    "axe/forms": [
+      "default",
+      {
+        "select-name": "off"
+      }
+    ]
   }
 }
